@@ -6,4 +6,4 @@ const post = (url, data, config = {})      => axios.post(url, data, config);
 
 export const getDifficulty = () => get( urlApi  + "difficulty" );
 export const getQuestions = (query) => get( urlApi + "questions?difficulty=" + query )
-export const addComment = (data) => post( urlApi + "answer", data);
+export const postAnswer = (data) => post( urlApi + "answer", data);
