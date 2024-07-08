@@ -7,10 +7,14 @@ function App() {
   const [difficulty, setDifficulty] = useState("")
 
   return (
-    <Router>
-      <div className='Title'> Preguntados </div>
-      <RouterApp difficulty={difficulty} setDifficulty={setDifficulty} />
-    </Router>
+    <div className='BigContainer'>
+    <div className='Title'>PREGUNTA2</div>
+    <div className='App'>
+            <Router>
+                <RouterApp setDifficulty={setDifficulty} />
+            </Router>
+        </div>
+    </div>
   )
 }
 

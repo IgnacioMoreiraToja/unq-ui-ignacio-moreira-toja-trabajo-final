@@ -20,7 +20,7 @@ const QuestionsPage = ({ difficulty }) => {
             .catch(error => {
                 console.error("Error fetching questions:", error)
             })
-    }, [difficulty])
+    }, [])
 
     const handleOptionClick = (option) => {
         setSelectedOption(option)
