@@ -1,16 +1,19 @@
+import './QuestionsPage.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getQuestions } from '../Api'
-import './QuestionsPage.css'
+import { getQuestions, postAnswer } from '../Api'
 import QuestionButton from '../QuestionButton/QuestionButton'
 
 const QuestionsPage = ({ difficulty }) => {
     const [questions, setQuestions] = useState([])
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const [selectedOption, setSelectedOption] = useState(null)
     const [score, setScore] = useState(0)
     const [isFinished, setIsFinished] = useState(false)
+    const [correctAnswer, setCorrectAnswer] = useState(null)
     const navigate = useNavigate()
+
+    const options = ['option1', 'option2', 'option3', 'option4']
+    
 
     useEffect(() => {
         getQuestions(difficulty)
@@ -22,22 +25,37 @@ const QuestionsPage = ({ difficulty }) => {
             })
     }, [])
 
-    const handleOptionClick = (option) => {
-        setSelectedOption(option)
+    const currentQuestion = questions[currentQuestionIndex]
+
+    const handleOptionClick = (optionSelected) => {
+        const currentQuestionId = questions[currentQuestionIndex].id
+            
+            const answer = {
+                questionId: currentQuestionId,
+                option: optionSelected,
+            };
+            
+            const answerCheck = JSON.stringify(answer);
+
+        postAnswer(answerCheck)
+            .then((response) => {
+                if(response.answer){
+                    setCorrectAnswer(currentQuestion[option])
+                    setScore(lastScore => lastScore + 1)
+                } else {
+                    setCorrectAnswer(null)
+                }
+            })
+            .finally(() => {
+                setTimeout(() => handleNextQuestion(), 3000);
+            })           
     }
 
     const handleNextQuestion = () => {
-        if (selectedOption) {
-            const currentQuestion = questions[currentQuestionIndex]
-            if (selectedOption === currentQuestion.option1) {
-                setScore(score + 1)
-            }
-        }
-
         const nextIndex = currentQuestionIndex + 1
         if (nextIndex < questions.length) {
             setCurrentQuestionIndex(nextIndex)
-            setSelectedOption(null)
+            setCorrectAnswer(null)
         } else {
             setIsFinished(true)
         }
@@ -60,16 +78,17 @@ const QuestionsPage = ({ difficulty }) => {
         )
     }
 
-    const currentQuestion = questions[currentQuestionIndex]
-
     return (
         <div className='QuestionsContainer'>
             <h2>{currentQuestion.question}</h2>
             <div className='Options'>
-                <QuestionButton option={currentQuestion.option1} onClick={() => handleOptionClick(currentQuestion.option1)} />
-                <QuestionButton option={currentQuestion.option2} onClick={() => handleOptionClick(currentQuestion.option2)} />
-                <QuestionButton option={currentQuestion.option3} onClick={() => handleOptionClick(currentQuestion.option3)} />
-                <QuestionButton option={currentQuestion.option4} onClick={() => handleOptionClick(currentQuestion.option4)} />
+                {options.map((opt,index) => (
+                <QuestionButton
+                    key= {index}
+                    option={currentQuestion[opt]}
+                    onClick={() => handleOptionClick(opt)}
+                    correctAnswer= {correctAnswer} />
+                ))}
             </div>
             <button onClick={handleNextQuestion}>Siguiente</button>
         </div>
