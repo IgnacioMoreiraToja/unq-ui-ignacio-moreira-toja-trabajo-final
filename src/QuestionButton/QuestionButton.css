@@ -1,15 +1,18 @@
 .QuestionButton {
-    min-width: 200px;
-    max-width: 350px;
-    margin:20px;
-    border-radius: 4px;
-    background-color: #E5E8E8;
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.winner {
-    background-color: #55FF33;
+.QuestionButton.winner {
+    background-color: #28a745;
+    color: #fff;
 }
 
-.loser {
-    background-color: red;
+.QuestionButton.loser {
+    background-color: #dc3545;
+    color: #fff;
 }

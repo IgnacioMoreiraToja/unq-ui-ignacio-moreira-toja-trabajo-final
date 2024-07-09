@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getQuestions, postAnswer } from '../Api'
 import QuestionButton from '../QuestionButton/QuestionButton'
+import Spinner from '../Spinner/Spinner'
 
 const QuestionsPage = ({ difficulty }) => {
     const [questions, setQuestions] = useState([])
@@ -10,45 +11,50 @@ const QuestionsPage = ({ difficulty }) => {
     const [score, setScore] = useState(0)
     const [isFinished, setIsFinished] = useState(false)
     const [correctAnswer, setCorrectAnswer] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [selected, setSelected] = useState(false)
     const navigate = useNavigate()
 
     const options = ['option1', 'option2', 'option3', 'option4']
-    
 
     useEffect(() => {
         getQuestions(difficulty)
             .then((response) => {
                 setQuestions(response.data)
+                setLoading(false)
             })
             .catch(error => {
                 console.error("Error fetching questions:", error)
             })
+            .finally(() => setLoading(false));
     }, [])
 
     const currentQuestion = questions[currentQuestionIndex]
 
     const handleOptionClick = (optionSelected) => {
-        const currentQuestionId = questions[currentQuestionIndex].id
-            
-            const answer = {
-                questionId: currentQuestionId,
-                option: optionSelected,
-            };
-            
-            const answerCheck = JSON.stringify(answer);
+        const currentQuestionId = currentQuestion.id
 
-        postAnswer(answerCheck)
+        const answer = {
+            questionId: currentQuestionId,
+            option: optionSelected,
+        }
+
+        postAnswer(answer)
             .then((response) => {
-                if(response.answer){
-                    setCorrectAnswer(currentQuestion[option])
+                if (response.data.answer) {
+                    setCorrectAnswer(optionSelected)
                     setScore(lastScore => lastScore + 1)
                 } else {
                     setCorrectAnswer(null)
                 }
             })
+            .catch((error) => {
+                console.error("Error posting answer:", error)
+            })
             .finally(() => {
-                setTimeout(() => handleNextQuestion(), 3000);
-            })           
+                setSelected(true)
+                setTimeout(() => {handleNextQuestion()}, 2000)
+            })
     }
 
     const handleNextQuestion = () => {
@@ -56,6 +62,7 @@ const QuestionsPage = ({ difficulty }) => {
         if (nextIndex < questions.length) {
             setCurrentQuestionIndex(nextIndex)
             setCorrectAnswer(null)
+            setSelected(false)
         } else {
             setIsFinished(true)
         }
@@ -63,10 +70,6 @@ const QuestionsPage = ({ difficulty }) => {
 
     const handleFinishGame = () => {
         navigate("/")
-    }
-
-    if (questions.length === 0) {
-        return <div>Loading...</div>
     }
 
     if (isFinished) {
@@ -80,17 +83,23 @@ const QuestionsPage = ({ difficulty }) => {
 
     return (
         <div className='QuestionsContainer'>
-            <h2>{currentQuestion.question}</h2>
-            <div className='Options'>
-                {options.map((opt,index) => (
-                <QuestionButton
-                    key= {index}
-                    option={currentQuestion[opt]}
-                    onClick={() => handleOptionClick(opt)}
-                    correctAnswer= {correctAnswer} />
-                ))}
-            </div>
-            <button onClick={handleNextQuestion}>Siguiente</button>
+            {loading ? <Spinner /> : (
+                <>
+                    <h2>{currentQuestion.question}</h2>
+                    <div className='Options'>
+                        {options.map((opt, index) => (
+                            <QuestionButton
+                                key={index}
+                                option={currentQuestion[opt]}
+                                onClick={() => handleOptionClick(opt)}
+                                isSelected={selected}
+                                isCorrect={correctAnswer === opt}
+                            />
+                        ))}
+                    </div>
+                    <div>Puntaje: {score}</div>
+                </>
+            )}
         </div>
     )
 }

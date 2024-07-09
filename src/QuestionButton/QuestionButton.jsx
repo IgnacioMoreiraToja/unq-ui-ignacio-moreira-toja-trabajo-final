@@ -1,29 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react'
 import './QuestionButton.css'
 
-const QuestionButton = ({ option, onClick, correctAnswer }) => {
+const QuestionButton = ({ option, onClick, isSelected, isCorrect }) => {
 
     const [selected, setSelected] = useState(false)
-    const [correct, setCorrect] = useState(correctAnswer)
+
+    useEffect(()=>{
+        setSelected(false)
+    },[option])
 
     const handleClick = () => {
         onClick()
         setSelected(true)
-        setTimeout(() => setSelected(false), 3100);
     }
 
     let classNameQuestion = 'QuestionButton '
-    if (selected){
-        classNameQuestion += (correct === option? 'winner' : 'loser')
+    if (selected && isSelected) {
+        classNameQuestion += isCorrect ? 'winner' : 'loser'
     }
 
-
     return (
-        <button className = {classNameQuestion}
-                onClick={handleClick}>
-                {option}
+        <button className={classNameQuestion} onClick={handleClick}>
+            {option}
         </button>
     )
 }
 
-export default QuestionButton;
+export default QuestionButton

@@ -8,12 +8,12 @@ function App() {
 
   return (
     <div className='BigContainer'>
-    <div className='Title'>PREGUNTA2</div>
-    <div className='App'>
-            <Router>
-                <RouterApp setDifficulty={setDifficulty} />
-            </Router>
-        </div>
+      <div className='Title'>PREGUNTA2</div>
+      <div className='App'>
+        <Router>
+          <RouterApp difficulty={difficulty} setDifficulty={setDifficulty} />
+        </Router>
+      </div>
     </div>
   )
 }
