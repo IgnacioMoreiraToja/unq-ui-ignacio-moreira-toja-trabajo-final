@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { getQuestions, postAnswer } from '../Api'
 import QuestionButton from '../QuestionButton/QuestionButton'
 import Spinner from '../Spinner/Spinner'
+import { Howl } from 'howler';
+import Finished from '../Finished/Finished'
 
 const QuestionsPage = ({ difficulty }) => {
     const [questions, setQuestions] = useState([])
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [score, setScore] = useState(0)
-    const [isFinished, setIsFinished] = useState(false)
+    const [finished, setFinished] = useState(false)
     const [correctAnswer, setCorrectAnswer] = useState(null)
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState(false)
@@ -17,19 +19,24 @@ const QuestionsPage = ({ difficulty }) => {
 
     const options = ['option1', 'option2', 'option3', 'option4']
 
+    const correctSound = new Howl({
+        src: "./correct.mp3"
+    });
+
+    const incorrectSound = new Howl({
+        src: "./incorrect.mp3"
+    });
+
     useEffect(() => {
         getQuestions(difficulty)
             .then((response) => {
                 setQuestions(response.data)
-                setLoading(false)
             })
             .catch(error => {
                 console.error("Error fetching questions:", error)
             })
-            .finally(() => setLoading(false));
+            .finally(() => setTimeout(() => {setLoading(false)}, 1000))
     }, [])
-
-    const currentQuestion = questions[currentQuestionIndex]
 
     const handleOptionClick = (optionSelected) => {
         const currentQuestionId = currentQuestion.id
@@ -44,8 +51,10 @@ const QuestionsPage = ({ difficulty }) => {
                 if (response.data.answer) {
                     setCorrectAnswer(optionSelected)
                     setScore(lastScore => lastScore + 1)
+                    correctSound.play();
                 } else {
                     setCorrectAnswer(null)
+                    incorrectSound.play();
                 }
             })
             .catch((error) => {
@@ -64,44 +73,44 @@ const QuestionsPage = ({ difficulty }) => {
             setCorrectAnswer(null)
             setSelected(false)
         } else {
-            setIsFinished(true)
+            setFinished(true)
         }
     }
 
-    const handleFinishGame = () => {
-        navigate("/")
-    }
+    
 
-    if (isFinished) {
-        return (
-            <div className='QuestionsContainer'>
-                <h2>¡Juego terminado! Tu puntuación: {score}</h2>
-                <button onClick={handleFinishGame}>Volver al Inicio</button>
-            </div>
-        )
-    }
+
+    const currentQuestion = questions[currentQuestionIndex]
 
     return (
         <div className='QuestionsContainer'>
-            {loading ? <Spinner /> : (
-                <>
-                    <h2>{currentQuestion.question}</h2>
-                    <div className='Options'>
-                        {options.map((opt, index) => (
-                            <QuestionButton
-                                key={index}
-                                option={currentQuestion[opt]}
-                                onClick={() => handleOptionClick(opt)}
-                                isSelected={selected}
-                                isCorrect={correctAnswer === opt}
-                            />
-                        ))}
-                    </div>
-                    <div>Puntaje: {score}</div>
-                </>
+            {finished ? (
+                <Finished score={score} />
+            ) : (
+                loading ? (
+                    <Spinner />
+                ) : (
+                    <>
+                        <div className='Question'>{currentQuestion.question}</div>
+                        <div className='Options'>
+                            {options.map((opt, index) => (
+                                <QuestionButton
+                                    key={index}
+                                    option={currentQuestion[opt]}
+                                    onClick={() => handleOptionClick(opt)}
+                                    isSelected={selected}
+                                    isCorrect={correctAnswer === opt}
+                                />
+                            ))}
+                        </div>
+                        <div className='Score'>Score: {score}</div>
+                    </>
+                )
             )}
         </div>
-    )
+    );
 }
 
-export default QuestionsPage
+export default QuestionsPage;
+
+

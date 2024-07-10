@@ -1,27 +1,28 @@
 body {
-    background-color: #ffd966;
+    background-color: #B6CE5D;
     min-height: 100%;
-    justify-content: center;
+    justify-items: center;
     align-items: center;
 }
 
 .BigContainer {
     display: grid;
     grid-template-rows: 10% 90%;
+    background-color: #B6CE5D;
     width: 1380px;
     height: 930px;
-    align-content: flex-start;
+    align-items: center;
+    justify-items: center;
     flex-wrap: wrap;
 }
 
 .App {
-    grid-row-start: 2;
     display: flex;
-    align-self: center;
-    justify-self: center;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    width: 100%;
-    max-width: 800px;
+    width: 900px;
+    height:500px;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
@@ -29,11 +30,5 @@ body {
 }
 
 .Title {
-    grid-row-start: 1;
-    align-self: start;
-    width: 100%;
-    font-size: 5rem;
-    text-align: center;
-    margin-top: 20px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    margin-top: 50px;
 }

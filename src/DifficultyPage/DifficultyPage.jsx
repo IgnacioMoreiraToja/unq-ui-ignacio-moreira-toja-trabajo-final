@@ -31,7 +31,7 @@ const DifficultyPage = ({ setDifficulty }) => {
         <div className='DifficultyContainer'>
             {loading ? <Spinner /> : 
                 <>
-                    <h2 className='DifficultyTitle'>Selecciona la Dificultad</h2>
+                    <div className='DifficultyTitle'>Select difficulty</div>
                     {difficulties.map((dif, index) => (
                         <DifficultyButton key={index} difLevel={dif} onClick={() => handleDifficultyClick(dif)} />
                     ))}

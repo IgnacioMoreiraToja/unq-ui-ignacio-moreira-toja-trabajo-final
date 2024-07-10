@@ -7,11 +7,14 @@ const QuestionButton = ({ option, onClick, isSelected, isCorrect }) => {
 
     useEffect(()=>{
         setSelected(false)
+        
     },[option])
 
     const handleClick = () => {
-        onClick()
-        setSelected(true)
+        if(!isSelected){
+            onClick()
+            setSelected(true)
+        }
     }
 
     let classNameQuestion = 'QuestionButton '

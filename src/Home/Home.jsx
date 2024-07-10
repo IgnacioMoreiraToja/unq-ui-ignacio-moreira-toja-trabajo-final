@@ -10,8 +10,8 @@ const Home = () => {
 
     return (
         <div className='HomeContainer'>
-            <h1 className='HomeTitle'>Bienvenidos a Preguntados</h1>
-            <button className='HomeButton' onClick={handleStart}>Comenzar</button>
+            <div className='HomeTitle'>Welcome to Pregunta2</div>
+            <button className='HomeButton' onClick={handleStart}>Begin!</button>
         </div>
     )
 }

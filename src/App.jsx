@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className='BigContainer'>
-      <div className='Title'>PREGUNTA2</div>
+      <img src="./titulo.png" className='Title'/>
       <div className='App'>
         <Router>
           <RouterApp difficulty={difficulty} setDifficulty={setDifficulty} />

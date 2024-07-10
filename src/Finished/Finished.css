@@ -1,37 +1,36 @@
-body {
-    background-color: #ffd966;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
-.HomeContainer {
+.FinishedContainer {
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
     padding: 20px;
     width: 700px;
     height: 400px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
 
-.HomeTitle {
+.FinishTitle{
+    font-size: 4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: red;
+    text-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.GameOver {
     font-size: 3rem;
     font-weight: 600;
     margin-bottom: 20px;
-    justify-self: center;
     color: #333;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    margin-top: 90px;
+    text-align: center;
 }
 
-.HomeButton {
+.RestartButton {
     font-size: 1.5rem;
     padding: 10px 20px;
     border: none;
-    align-self: center;
     border-radius: 5px;
     background-color: #283DEE;
     color: #ffffff;
@@ -39,9 +38,9 @@ body {
     width: 150px;
     height: 50px;
     transition: background-color 0.3s ease;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
-.HomeButton:hover {
+.RestartButton:hover {
     background-color: #5A6AEE;
 }
