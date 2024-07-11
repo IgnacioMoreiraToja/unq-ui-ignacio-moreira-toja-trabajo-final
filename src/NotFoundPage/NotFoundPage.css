@@ -1,0 +1,42 @@
+.NotFoundContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 20px;
+    width: 700px;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.NotFoundTitle {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.NotFoundMessage {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #666;
+    text-align: center;
+}
+
+.NotFoundButton {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #283DEE;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.NotFoundButton:hover {
+    background-color: #5A6AEE;
+}

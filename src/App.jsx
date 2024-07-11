@@ -1,6 +1,8 @@
-import { BrowserRouter as Router } from 'react-router-dom'
-import { useState } from 'react'
 import './App.css'
+
+import { useState } from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+
 import RouterApp from './Router'
 
 function App() {

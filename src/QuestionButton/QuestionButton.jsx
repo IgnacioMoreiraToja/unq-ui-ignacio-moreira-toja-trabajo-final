@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import './QuestionButton.css'
 
 const QuestionButton = ({ option, onClick, isSelected, isCorrect }) => {

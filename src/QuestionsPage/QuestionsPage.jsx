@@ -1,11 +1,14 @@
 import './QuestionsPage.css'
+
+import { Howl } from 'howler'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getQuestions, postAnswer } from '../Api'
+
+import Finished from '../Finished/Finished'
+import NetworkError from '../NetworkError/NetworkError'
 import QuestionButton from '../QuestionButton/QuestionButton'
 import Spinner from '../Spinner/Spinner'
-import { Howl } from 'howler';
-import Finished from '../Finished/Finished'
 
 const QuestionsPage = ({ difficulty }) => {
     const [questions, setQuestions] = useState([])
@@ -15,7 +18,12 @@ const QuestionsPage = ({ difficulty }) => {
     const [correctAnswer, setCorrectAnswer] = useState(null)
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState(false)
+    const [networkError, setNetworkError] = useState(false)
     const navigate = useNavigate()
+
+    if (!difficulty){
+        navigate("/");
+    }
 
     const options = ['option1', 'option2', 'option3', 'option4']
 
@@ -33,6 +41,7 @@ const QuestionsPage = ({ difficulty }) => {
                 setQuestions(response.data)
             })
             .catch(error => {
+                setNetworkError(true)
                 console.error("Error fetching questions:", error)
             })
             .finally(() => setTimeout(() => {setLoading(false)}, 1000))
@@ -57,8 +66,9 @@ const QuestionsPage = ({ difficulty }) => {
                     incorrectSound.play();
                 }
             })
-            .catch((error) => {
-                console.error("Error posting answer:", error)
+            .catch(() => {
+                setNetworkError(true)
+                console.error("Error fetching answer:", error)
             })
             .finally(() => {
                 setSelected(true)
@@ -107,6 +117,7 @@ const QuestionsPage = ({ difficulty }) => {
                     </>
                 )
             )}
+            {networkError && <NetworkError />}
         </div>
     );
 }

@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import './Finished.css';
+
+import { useNavigate } from 'react-router-dom';
 
 const Finished = ({ score }) => {
     const navigate = useNavigate();
